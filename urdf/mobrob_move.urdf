@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<robot name="mobrob">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.2 0.25 0.055"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.2 0.25 0.055"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="upperbase_link">
+    <visual>
+      <geometry>
+        <box size="0.4 0.25 0.065"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.4 0.25 0.065"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_to_upperbase" type="fixed">
+    <parent link="base_link"/>
+    <child link="upperbase_link"/>
+    <origin xyz="0 0 0.06"/>
+  </joint>
+
+
+  <link name="right_front_wheel">
+    <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.032" radius="0.03"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.032" radius="0.03"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_front_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_front_wheel"/>
+    <origin rpy="0 0 0" xyz="0.142 0.109 -0.0175"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="right_back_wheel">
+    <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.032" radius="0.03"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.032" radius="0.03"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_back_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_back_wheel"/>
+    <origin rpy="0 0 0" xyz="-0.147 0.109 -0.0175"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+
+  <link name="left_front_wheel">
+    <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.032" radius="0.03"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.032" radius="0.03"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_front_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_front_wheel"/>
+    <origin rpy="0 0 0" xyz="0.142 -0.109 -0.0175"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <link name="left_back_wheel">
+    <visual>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.032" radius="0.03"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.032" radius="0.03"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_back_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_back_wheel"/>
+    <origin rpy="0 0 0" xyz="-0.147 -0.109 -0.0175"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+
+  <link name="gripper_stand">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.065"/>
+      <geometry>
+        <box size="0.03 0.13 0.18"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.03 0.13 0.18"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="base_to_gripper_stand_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="gripper_stand"/>
+    <origin rpy="0 0 0" xyz="0.2 0 0.1175"/>
+  </joint>
+
+  <link name="gripper_base">
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.04 0 0"/>
+      <geometry>
+        <box size="0.04 0.25 0.057"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.04 0.25 0.057"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="gripper_stand_to_gripper_joint" type="prismatic">
+    <parent link="gripper_stand"/>
+    <child link="gripper_base"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="-0.11" upper="0" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0.075 0 0"/>
+  </joint>
+
+  <link name="right_finger">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 -0.006  0"/>
+      <geometry>
+        <box size="0.04 0.012 0.025"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.04 0.012 0.025"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="gripper_to_right_finger_joint" type="prismatic">
+    <parent link="gripper_base"/>
+    <child link="right_finger"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" lower="-0.11" upper="0" velocity="0.5"/>
+  </joint>
+
+  <link name="left_finger">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0.006 0"/>
+      <geometry>
+        <box size="0.04 0.012 0.025"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.04 0.012 0.025"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="gripper_to_left_finger_joint" type="prismatic">
+    <parent link="gripper_base"/>
+    <child link="left_finger"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" lower="0" upper="0.11" velocity="0.5"/>
+  </joint>
+
+
+</robot>
