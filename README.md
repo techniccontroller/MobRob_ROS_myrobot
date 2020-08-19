@@ -10,7 +10,7 @@ ROS-Package: **myrobot_model** package for MobRob
 - own service descriptions for Mobrob: [srv/AttinyCommand.srv](srv/AttinyCommand.srv)
 - own topic descriptions for MobRob: [msg/Pose.msg](msg/Pose.msg)
 
-## Visualize the robot model in RViz
+## Visualize the model in RViz
 
 Run following command to visualize the [urdf/mobrob_move.urdf](urdf/mobrob_move.urdf) model in RViz:
 
