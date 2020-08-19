@@ -25,7 +25,6 @@
       </geometry>
     </collision>
   </link>
-
   <joint name="base_to_upperbase" type="fixed">
     <parent link="base_link"/>
     <child link="upperbase_link"/>
@@ -33,16 +32,20 @@
   </joint>
 
   <link name="laser">
-  
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.03" radius="0.04"/>
+      </geometry>
+      <material name="black"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
   </link>
   <joint name="base_to_laser" type="fixed">
     <parent link="base_link"/>
     <child link="laser"/>
     <origin rpy="0 0 3.14159" xyz="0.055 0 0.06"/>
   </joint>
-
-  
-
 
   <link name="right_front_wheel">
     <visual>
@@ -87,7 +90,6 @@
     <axis xyz="0 1 0"/>
   </joint>
 
-
   <link name="left_front_wheel">
     <visual>
       <origin rpy="1.57075 0 0" xyz="0 0 0"/>
@@ -129,7 +131,6 @@
     <origin rpy="0 0 0" xyz="-0.147 -0.109 -0.0175"/>
     <axis xyz="0 1 0"/>
   </joint>
-
 
   <link name="gripper_stand">
     <visual>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="multipleshapes">
+<robot name="mobrob_fixed">
   <link name="base_link">
     <visual>
       <geometry>
@@ -15,13 +15,11 @@
       </geometry>
     </visual>
   </link>
-
   <joint name="base_to_upperbase" type="fixed">
     <parent link="base_link"/>
     <child link="upperbase_link"/>
     <origin xyz="0 0 0.06"/>
   </joint>
-
 
   <link name="right_front_wheel">
     <visual>
@@ -53,7 +51,6 @@
     <child link="right_back_wheel"/>
     <origin rpy="0 0 0" xyz="-0.147 0.109 -0.0175"/>
   </joint>
-
 
   <link name="left_front_wheel">
     <visual>
