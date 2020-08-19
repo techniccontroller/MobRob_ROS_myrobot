@@ -20,7 +20,7 @@ roslaunch myrobot_model display.launch
 
 ![alt text](https://github.com/techniccontroller/MobRob_ROS_myrobot/blob/master/urdf/mobrob_move.png "mobrob_move.urdf")
 
-Run following command to visualize the urdf/mobrob_fixed.urdf model in RViz:
+Run following command to visualize the [urdf/mobrob_fixed.urdf](urdf/mobrob_fixed.urdf) model in RViz:
 
 ```
 roslaunch myrobot_model display.launch model:='$(find myrobot_model)/urdf/mobrob_fixed.urdf'
