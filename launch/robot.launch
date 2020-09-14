@@ -1,5 +1,0 @@
-<launch>
-        <param name="robot_description" command="cat $(find myrobot_model)/urdf/mobrob_move.urdf" />
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
-        <node name="state_publisher" pkg="myrobot_model" type="state_publisher" />
-</launch>
