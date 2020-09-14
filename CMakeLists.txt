@@ -10,7 +10,6 @@ project(myrobot_model)
 find_package(catkin REQUIRED COMPONENTS
   joint_state_publisher
   robot_state_publisher
-  rviz
   xacro
 )
 
