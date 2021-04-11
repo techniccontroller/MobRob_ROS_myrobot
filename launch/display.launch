@@ -10,8 +10,11 @@
   <!-- adjust joint state via gui -->
   <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
   
+  <!-- OR -->
   <!-- animate the joint state by own state publisher-->
   <!--<node name="mobrob_basecode_state_publisher" pkg="mobrob_basecode" type="mobrob_basecode_state_publisher" />-->
+  
+  
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 

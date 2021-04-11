@@ -25,3 +25,8 @@ Run following command to visualize the [urdf/mobrob_fixed.urdf](urdf/mobrob_fixe
 ```
 roslaunch myrobot_model display.launch model:='$(find myrobot_model)/urdf/mobrob_fixed.urdf'
 ```
+
+
+## Animatie joints in the model
+
+Change the joint publisher in [launch/display.launch](launch/display.launch) to animate the joint state by own state publisher. 
