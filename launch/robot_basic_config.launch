@@ -1,0 +1,48 @@
+<launch>
+	
+    <arg name="model" default="$(find myrobot_model)/urdf/mobrob_move.urdf"/>
+	<arg name="gui" default="true" />
+	<arg name="rvizconfig" default="$(find myrobot_model)/rviz/urdf.rviz" />
+
+	<param name="use_gui" value="$(arg gui)"/>
+	<param name="robot_description" command="cat $(find myrobot_model)/urdf/mobrob_move.urdf" />
+	
+
+	<machine name="station" address="localhost" env-loader="/opt/ros/kinetic/env.sh" default="true"/>  	
+	<machine name="mobrob" address="MOBROB" env-loader="/opt/ros/kinetic/robot_env.sh" user="ubuntu" password="mobrob123"/>
+	
+	<!-- nodes running on station-->
+	<!-- open rviz to visualize the robot state -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" machine="station"/>	
+	<node name="robot_state_publisher_node" pkg="robot_state_publisher" type="state_publisher" machine="station"/>
+	
+	<!-- adjust joint state via gui -->
+	<!--<node name="joint_state_publisher_gui_node" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" machine="station"/>-->
+	<!-- OR -->
+	<!-- send static joint state by own state publisher-->
+	<node name="static_joint_state_publisher_node" pkg="mobrob_robotcode" type="mobrob_robotcode_static_joint_state_publisher" machine="station"/>	
+  	
+	
+	<!-- Nodes running on robot-->
+	<!-- start node for RPLIDAR-->
+	<node name="rplidar_node" pkg="rplidar_ros" type="rplidarNode" output="screen" machine="mobrob">
+		<param name="serial_port"         type="string" value="/dev/rplidar"/>
+		<param name="serial_baudrate"     type="int"    value="115200"/><!--A1/A2 -->
+		<!--param name="serial_baudrate"     type="int"    value="256000"--><!--A3 -->
+		<param name="frame_id"            type="string" value="laser"/>
+		<param name="inverted"            type="bool"   value="false"/>
+		<param name="angle_compensate"    type="bool"   value="true"/>
+	</node>
+
+	<!-- start node on Arduino Mega for robot movement and LED control -->
+	<node name="arduino_node" pkg="rosserial_python" type="serial_node.py" machine="mobrob">
+		<param name="port" value="/dev/arduino" />
+	</node>
+
+	<!-- start node for gripper and camera movement-->
+	<node name="attiny_node" pkg="mobrob_robotcode" type="attiny_server.py" machine="mobrob"/>
+
+	<!-- start node for converting /pose to /odom topic and publish /odom to /baselink transformation-->
+	<node name="odomconverter_node" pkg="mobrob_robotcode" type="mobrob_robotcode_odom_converter" machine="mobrob"/>
+	
+</launch>
