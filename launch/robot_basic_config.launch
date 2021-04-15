@@ -9,7 +9,7 @@
 	
 
 	<machine name="station" address="localhost" env-loader="/opt/ros/kinetic/env.sh" default="true"/>  	
-	<machine name="mobrob" address="MOBROB" env-loader="/opt/ros/kinetic/robot_env.sh" user="ubuntu" password="mobrob123"/>
+	<machine name="mobrob" address="MOBROB" timeout="20" env-loader="/opt/ros/kinetic/robot_env.sh" user="ubuntu" password="mobrob123"/>
 	
 	<!-- nodes running on station-->
 	<!-- open rviz to visualize the robot state -->
@@ -22,6 +22,9 @@
 	<!-- send static joint state by own state publisher-->
 	<node name="static_joint_state_publisher_node" pkg="mobrob_robotcode" type="mobrob_robotcode_static_joint_state_publisher" machine="station"/>	
   	
+	<node name="image_view_node" pkg="image_view" type="image_view" machine="station">
+		<remap from="image" to="/image_koosvisu" />
+	</node>
 	
 	<!-- Nodes running on robot-->
 	<!-- start node for RPLIDAR-->
