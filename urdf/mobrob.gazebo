@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot>
+
+  <!-- actuator -->
+  <gazebo>
+
+    <plugin name="object_controller" filename="libgazebo_ros_planar_move.so">
+      <commandTopic>cmd_vel</commandTopic>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <odometryRate>20.0</odometryRate>
+      <robotBaseFrame>base_footprint</robotBaseFrame>
+    </plugin>
+  </gazebo>
+
+  <!-- hokuyo laser scanner-->
+  <gazebo reference="laser">
+    <sensor type="gpu_ray" name="head_hokuyo_sensor">
+      <pose xyz="0 0 0" rpy="0 0 0" />
+      <visualize>true</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>6.283184</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.15</min>
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise parameters based on published spec for Hokuyo laser
+               achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+               stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+               reading. -->
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+        <topicName>/scan</topicName>
+        <frameName>laser</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+
+  <gazebo reference="base_link">
+      <material>Gazebo/Wood</material>
+  </gazebo>
+
+  <gazebo reference="upperbase_link">
+      <material>Gazebo/Wood</material>
+  </gazebo>
+
+  <gazebo reference="gripper_stand">
+      <material>Gazebo/Wood</material>
+  </gazebo>
+
+  <gazebo reference="gripper_base">
+      <material>Gazebo/Wood</material>
+  </gazebo>
+
+  <gazebo reference="laser">
+      <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="right_back_wheel">
+      <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="left_back_wheel">
+      <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="right_front_wheel">
+      <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="left_front_wheel">
+      <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="right_finger">
+      <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="left_finger">
+      <material>Gazebo/Black</material>
+  </gazebo>
+
+
+
+</robot>

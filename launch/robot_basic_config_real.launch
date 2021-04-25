@@ -1,19 +1,18 @@
+<?xml version="1.0"?>
 <launch>
 	
-    <arg name="model" default="$(find myrobot_model)/urdf/mobrob_move.urdf"/>
 	<arg name="gui" default="true" />
 	<arg name="rvizconfig" default="$(find myrobot_model)/rviz/urdf.rviz" />
 
 	<param name="use_gui" value="$(arg gui)"/>
-	<param name="robot_description" command="cat $(find myrobot_model)/urdf/mobrob_move.urdf" />
-	
+	<!--param name="robot_description" command="cat $(find myrobot_model)/urdf/mobrob_move.urdf" /-->
+	<param name="robot_description" command="$(find xacro)/xacro.py '$(find myrobot_model)/urdf/mobrob_move.xacro'"/>
 
-	<machine name="station" address="localhost" env-loader="/opt/ros/kinetic/env.sh" default="true"/>  	
-	<machine name="mobrob" address="MOBROB" timeout="20" env-loader="/opt/ros/kinetic/robot_env.sh" user="ubuntu" password="mobrob123"/>
+	<include file="$(find myrobot_model)/mobrob.machine" />
 	
 	<!-- nodes running on station-->
 	<!-- open rviz to visualize the robot state -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" machine="station"/>	
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" machine="station"/>	
 	<node name="robot_state_publisher_node" pkg="robot_state_publisher" type="state_publisher" machine="station"/>
 	
 	<!-- adjust joint state via gui -->
