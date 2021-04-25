@@ -9,6 +9,7 @@ ROS-Package: **myrobot_model** package for MobRob
 - visual model of MobRob with fixed joints: [urdf/mobrob_fixed.urdf](urdf/mobrob_fixed.urdf)
 - own service descriptions for Mobrob: [srv/AttinyCommand.srv](srv/AttinyCommand.srv)
 - own topic descriptions for MobRob: [msg/Pose.msg](msg/Pose.msg)
+- xacro model of MobRob with inertial properties for gazebo simulation: [urdf/mobrob_move.xacro](urdf/mobrob_move.xacro)
 
 ## Visualize the model in RViz
 
