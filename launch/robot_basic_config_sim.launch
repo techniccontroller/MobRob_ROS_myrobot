@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+	
+	<!-- start gazebo -->
+	<include file="$(find mobrob_gazebo)/launch/myrobot_world.launch" />
+
+	<arg name="rvizconfig" default="$(find myrobot_model)/rviz/urdf.rviz" />
+
+	<!--param name="robot_description" command="cat $(find myrobot_model)/urdf/mobrob_move.urdf" /-->
+	<param name="robot_description" command="$(find xacro)/xacro.py '$(find myrobot_model)/urdf/mobrob_move.xacro'"/>
+
+	
+	<!-- nodes running on station-->
+	<!-- open rviz to visualize the robot state -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true"/>	
+	<node name="robot_state_publisher_node" pkg="robot_state_publisher" type="state_publisher"/>
+	
+	<!-- adjust joint state via gui -->
+	<!--<node name="joint_state_publisher_gui_node" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>-->
+	<!-- OR -->
+	<!-- send static joint state by own state publisher-->
+	<node name="static_joint_state_publisher_node" pkg="mobrob_robotcode" type="mobrob_robotcode_static_joint_state_publisher"/>	
+  	
+	<node name="image_view_node" pkg="image_view" type="image_view">
+		<remap from="image" to="/image_koosvisu" />
+	</node>
+	
+</launch>
