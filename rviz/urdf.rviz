@@ -8,6 +8,7 @@ Panels:
         - /Status1
         - /RobotModel1
         - /TF1
+        - /LaserScan1
       Splitter Ratio: 0.5
     Tree Height: 595
   - Class: rviz/Selection
@@ -28,7 +29,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: LaserScan
 Toolbars:
   toolButtonStyle: 2
 Visualization Manager:
@@ -62,6 +63,10 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base_footprint:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         base_link:
           Alpha: 1
           Show Axes: false
@@ -128,6 +133,8 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
+        base_footprint:
+          Value: true
         base_link:
           Value: true
         gripper_base:
@@ -141,6 +148,8 @@ Visualization Manager:
         left_finger:
           Value: true
         left_front_wheel:
+          Value: true
+        odom:
           Value: true
         right_back_wheel:
           Value: true
@@ -156,26 +165,59 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_link:
-          gripper_stand:
-            gripper_base:
-              left_finger:
-                {}
-              right_finger:
-                {}
-          laser:
-            {}
-          left_back_wheel:
-            {}
-          left_front_wheel:
-            {}
-          right_back_wheel:
-            {}
-          right_front_wheel:
-            {}
-          upperbase_link:
-            {}
+        base_footprint:
+          base_link:
+            gripper_stand:
+              gripper_base:
+                left_finger:
+                  {}
+                right_finger:
+                  {}
+            laser:
+              {}
+            left_back_wheel:
+              {}
+            left_front_wheel:
+              {}
+            right_back_wheel:
+              {}
+            right_front_wheel:
+              {}
+            upperbase_link:
+              {}
+        odom:
+          {}
       Update Interval: 0
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/LaserScan
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 0
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: LaserScan
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.0500000007
+      Style: Flat Squares
+      Topic: /scan
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
       Value: true
   Enabled: true
   Global Options:
@@ -202,7 +244,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.6654017
+      Distance: 7.10108328
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -217,10 +259,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.430398285
+      Pitch: 0.555398285
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.72173452
+      Yaw: 5.57673502
     Saved: ~
 Window Geometry:
   Displays:
