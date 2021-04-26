@@ -28,6 +28,6 @@ roslaunch myrobot_model display.launch model:='$(find myrobot_model)/urdf/mobrob
 ```
 
 
-## Animatie joints in the model
+## Animate joints in the model
 
 Change the joint publisher in [launch/display.launch](launch/display.launch) to animate the joint state by own state publisher. 
