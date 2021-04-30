@@ -7,7 +7,7 @@
 	<arg name="rvizconfig" default="$(find myrobot_model)/rviz/urdf.rviz" />
 
 	<!--param name="robot_description" command="cat $(find myrobot_model)/urdf/mobrob_move.urdf" /-->
-	<param name="robot_description" command="$(find xacro)/xacro.py '$(find myrobot_model)/urdf/mobrob_move.xacro'"/>
+	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find myrobot_model)/urdf/mobrob_move.xacro'"/>
 
 	
 	<!-- nodes running on station-->

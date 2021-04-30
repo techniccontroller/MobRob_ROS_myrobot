@@ -6,9 +6,9 @@
 
 	<param name="use_gui" value="$(arg gui)"/>
 	<!--param name="robot_description" command="cat $(find myrobot_model)/urdf/mobrob_move.urdf" /-->
-	<param name="robot_description" command="$(find xacro)/xacro.py '$(find myrobot_model)/urdf/mobrob_move.xacro'"/>
+	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find myrobot_model)/urdf/mobrob_move.xacro'"/>
 
-	<include file="$(find myrobot_model)/mobrob.machine" />
+	<include file="$(find myrobot_model)/launch/mobrob.machine" />
 	
 	<!-- nodes running on station-->
 	<!-- open rviz to visualize the robot state -->
