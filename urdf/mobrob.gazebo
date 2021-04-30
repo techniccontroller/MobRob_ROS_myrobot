@@ -15,7 +15,7 @@
 
   <!-- hokuyo laser scanner-->
   <gazebo reference="laser">
-    <sensor type="gpu_ray" name="head_hokuyo_sensor">
+    <sensor type="gpu_ray" name="head_rplidar_sensor">
       <pose xyz="0 0 0" rpy="0 0 0" />
       <visualize>true</visualize>
       <update_rate>10</update_rate>
