@@ -10,7 +10,8 @@ ROS-Package: **myrobot_model** package for MobRob
 - own service descriptions for Mobrob: [srv/AttinyCommand.srv](srv/AttinyCommand.srv)
 - own topic descriptions for MobRob: [msg/Pose.msg](msg/Pose.msg)
 - xacro model of MobRob with inertial properties for gazebo simulation: [urdf/mobrob_move.xacro](urdf/mobrob_move.xacro)
-- launch files for MobRob: [launch/](launch/)
+- launch file for MobRob (real robot): [launch/robot_basic_config_real.launch](launch/robot_basic_config_real.launch)
+- launch file for MobRob (simulated robot): [launch/robot_basic_config_sim.launch](launch/robot_basic_config_sim.launch)
 
 ## Visualize the model in RViz
 
