@@ -4,18 +4,18 @@
   <arg name="gui" default="true" />
   <arg name="rvizconfig" default="$(find myrobot_model)/rviz/urdf.rviz" />
 
-  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+  <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
   <param name="use_gui" value="$(arg gui)"/>
 
   <!-- adjust joint state via gui -->
-  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+  <!--<node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />-->
   
   <!-- OR -->
   <!-- animate the joint state by own state publisher-->
-  <!--<node name="mobrob_basecode_state_publisher" pkg="mobrob_basecode" type="mobrob_basecode_state_publisher" />-->
+  <node name="mobrob_robotcode_state_publisher" pkg="mobrob_robotcode" type="mobrob_robotcode_state_publisher" />
   
   
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 
 </launch>
