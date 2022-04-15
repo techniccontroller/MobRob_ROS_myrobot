@@ -2,8 +2,8 @@
 
 <robot name="mobrob" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find myrobot_model)/urdf/mobrob_gpu.gazebo" />
-
+  <!--<xacro:include filename="$(find myrobot_model)/urdf/mobrob_gpu.gazebo" />-->
+  <xacro:include filename="$(find myrobot_model)/urdf/mobrob.gazebo" />
 
   <link name="base_footprint"></link>
 
