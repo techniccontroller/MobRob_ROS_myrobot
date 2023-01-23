@@ -13,7 +13,7 @@
 	<!-- nodes running on station-->
 	<!-- open rviz to visualize the robot state -->
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" machine="station"/>	
-	<node name="robot_state_publisher_node" pkg="robot_state_publisher" type="state_publisher" machine="station"/>
+	<node name="robot_state_publisher_node" pkg="robot_state_publisher" type="robot_state_publisher" machine="station"/>
 	
 	<!-- adjust joint state via gui -->
 	<!--<node name="joint_state_publisher_gui_node" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" machine="station"/>-->
