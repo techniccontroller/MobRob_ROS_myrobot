@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <launch>
     <machine name="station" address="localhost" env-loader="/opt/ros/kinetic/env.sh" default="true"/>  	
-    <machine name="mobrob" address="MOBROB" timeout="20" env-loader="/opt/ros/kinetic/robot_env.sh" user="ubuntu" password="mobrob123"/>
+    <machine name="mobrob" address="MOBROB" timeout="20" env-loader="/opt/ros/noetic/robot_env.sh" user="pi" password="mobrob"/>
 </launch>
