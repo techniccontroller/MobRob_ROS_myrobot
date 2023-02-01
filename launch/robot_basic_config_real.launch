@@ -12,7 +12,10 @@
 	
 	<!-- nodes running on station-->
 	<!-- open rviz to visualize the robot state -->
-	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" machine="station"/>	
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" machine="station"/>
+	<!-- publish robot state -->
+	<!-- robot_state_publisher uses the URDF specified by the parameter robot_description and the joint positions -->
+	<!-- from the topic joint_states to calculate the forward kinematics of the robot and publish the results via tf.-->
 	<node name="robot_state_publisher_node" pkg="robot_state_publisher" type="robot_state_publisher" machine="station"/>
 	
 	<!-- adjust joint state via gui -->
