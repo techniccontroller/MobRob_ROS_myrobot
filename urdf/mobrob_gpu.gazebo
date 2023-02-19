@@ -148,5 +148,19 @@
       <material>Gazebo/Black</material>
   </gazebo>
 
+  <gazebo reference="left_finger">
+    <sensor name='my_contact' type='contact'>
+    <plugin name="my_plugin" filename="libcontact.so"/>
+      <contact>
+        <collision>left_finger_collision</collision>
+      </contact>
+      <update_rate> 5 </update_rate>
+    </sensor>
+  </gazebo>
+
+  <!--<gazebo>
+    <plugin name="gripper_move" filename="libgripper_move.so"/>
+  </gazebo>-->
+
 
 </robot>

@@ -80,3 +80,19 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+
+find_package(gazebo REQUIRED)
+
+include_directories(${GAZEBO_INCLUDE_DIRS})
+link_directories(${GAZEBO_LIBRARY_DIRS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
+
+add_library(contact SHARED src/gazebo_plugins/ContactPlugin.cc)
+target_link_libraries(contact ${GAZEBO_LIBRARIES})
+
+add_library(gripper_move SHARED src/gazebo_plugins/gripper_move.cc)
+target_link_libraries(gripper_move ${GAZEBO_LIBRARIES})
+
+add_executable(attiny_server_sim src/attiny_server_sim.cpp)
+target_link_libraries(attiny_server_sim ${catkin_LIBRARIES})
+add_dependencies(attiny_server_sim ${catkin_EXPORTED_TARGETS})
