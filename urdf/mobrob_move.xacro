@@ -267,21 +267,22 @@
     <parent link="gripper_stand"/>
     <child link="gripper_base"/>
     <axis xyz="0 0 1"/>
-    <limit effort="1000.0" lower="-0.11" upper="0" velocity="0.5"/>
+    <limit effort="1000.0" lower="-0.15" upper="0" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0.075 0 0"/>
+    <dynamics damping="0.01" friction="0.1"/>
   </joint>
 
   <link name="right_finger">
     <visual>
       <origin rpy="0 0 0" xyz="0 -0.006  0"/>
       <geometry>
-        <box size="0.04 0.012 0.025"/>
+        <box size="0.08 0.012 0.025"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 -0.006  0"/>
       <geometry>
-        <box size="0.04 0.012 0.025"/>
+        <box size="0.08 0.012 0.025"/>
       </geometry>
     </collision>
     <inertial>
@@ -298,19 +299,20 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="-0.11" upper="0" velocity="0.5"/>
+    <dynamics damping="0.01" friction="0.1"/>
   </joint>
 
   <link name="left_finger">
     <visual>
       <origin rpy="0 0 0" xyz="0 0.006 0"/>
       <geometry>
-        <box size="0.04 0.012 0.025"/>
+        <box size="0.08 0.012 0.025"/>
       </geometry>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0.006 0"/>
       <geometry>
-        <box size="0.04 0.012 0.025"/>
+        <box size="0.08 0.012 0.025"/>
       </geometry>
     </collision>
     <inertial>
@@ -327,6 +329,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="0" upper="0.11" velocity="0.5"/>
+    <dynamics damping="0.01" friction="0.1"/>
   </joint>
 
   <link name="camera_servo">

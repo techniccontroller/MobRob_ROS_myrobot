@@ -11,6 +11,8 @@ find_package(catkin REQUIRED COMPONENTS
   joint_state_publisher
   robot_state_publisher
   xacro
+  roscpp
+  gazebo_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -67,7 +69,10 @@ catkin_package(
 #  LIBRARIES myrobot_model
 #  CATKIN_DEPENDS joint_state_publisher robot_state_publisher rviz xacro
 #  DEPENDS system_lib
-    CATKIN_DEPENDS message_runtime
+  CATKIN_DEPENDS message_runtime
+  DEPENDS
+    roscpp
+    gazebo_ros
 )
 
 ###########
@@ -96,3 +101,6 @@ target_link_libraries(gripper_move ${GAZEBO_LIBRARIES})
 add_executable(attiny_server_sim src/attiny_server_sim.cpp)
 target_link_libraries(attiny_server_sim ${catkin_LIBRARIES})
 add_dependencies(attiny_server_sim ${catkin_EXPORTED_TARGETS})
+
+add_library(attiny_server_sim_gazebo src/gazebo_plugins/attiny_server_sim_gazebo.cpp)
+target_link_libraries(attiny_server_sim_gazebo ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
