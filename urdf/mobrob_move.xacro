@@ -229,11 +229,11 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.28"/>
+      <mass value="0.028"/>
       <inertia
-        ixx="0.001154" ixy="0.0" ixz="0.0"
-        iyy="0.0007792" iyz="0.0"
-        izz="0.0004165"/>
+        ixx="0.0001154" ixy="0.0" ixz="0.0"
+        iyy="0.00007792" iyz="0.0"
+        izz="0.00004165"/>
     </inertial>
   </link>
   <joint name="base_to_gripper_stand_joint" type="fixed">
@@ -256,20 +256,19 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.228"/>
+      <mass value="0.0228"/>
       <inertia
-        ixx="0.001249" ixy="0.0" ixz="0.0"
-        iyy="0.00009213" iyz="0.0"
-        izz="0.001218"/>
+        ixx="0.0001249" ixy="0.0" ixz="0.0"
+        iyy="0.000009213" iyz="0.0"
+        izz="0.0001218"/>
     </inertial>
   </link>
   <joint name="gripper_stand_to_gripper_joint" type="prismatic">
     <parent link="gripper_stand"/>
     <child link="gripper_base"/>
     <axis xyz="0 0 1"/>
-    <limit effort="1000.0" lower="-0.15" upper="0" velocity="0.5"/>
+    <limit effort="1000.0" lower="-0.12" upper="0" velocity="0.5"/>
     <origin rpy="0 0 0" xyz="0.075 0 0"/>
-    <dynamics damping="0.01" friction="0.1"/>
   </joint>
 
   <link name="right_finger">
@@ -299,7 +298,6 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="-0.11" upper="0" velocity="0.5"/>
-    <dynamics damping="0.01" friction="0.1"/>
   </joint>
 
   <link name="left_finger">
@@ -329,7 +327,6 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="0" upper="0.11" velocity="0.5"/>
-    <dynamics damping="0.01" friction="0.1"/>
   </joint>
 
   <link name="camera_servo">

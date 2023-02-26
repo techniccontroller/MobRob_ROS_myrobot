@@ -20,24 +20,34 @@ namespace gazebo
             float targetPositionVertical;
             float targetPositionGripper;
             float targetPositionServo;
+            float temptargetPositionGripper;
+            float temptargetPositionVertical;
+            float temptargetPositionServo;
             float velocityVertical;
             float velocityGripper;
             float velocityServo;
             bool isInitializedVERT;
             bool isInitializedGRIP;
             float VELCONSTVertical = 0.02;
-            float VELCONSTGripper = 0.01;
+            float VELCONSTGripper = 0.1;
             float LIMIT_VERT_UP = 0.142;
-            float LIMIT_VERT_DOWN = 0.029;
+            float LIMIT_VERT_DOWN = 0.025;
             float LIMIT_GRIP_UP = 0.153;
             float LIMIT_GRIP_DOWN = 0.0;
-            float LIMIT_SERVO_UP = 0.0;
-            float LIMIT_SERVO_DOWN = 0.0;
+            float LIMIT_SERVO_UP = 3.14159;
+            float LIMIT_SERVO_DOWN = 0.69;
             float TOLERANCE = 0.001;
             bool isEndGripPressed = false;
 
             // Pointer to the model
             physics::ModelPtr model;
+
+            physics::JointControllerPtr jointController;
+            std::string nameLeftFingerJoint;
+            std::string nameRightFingerJoint;
+            std::string nameVerticalJoint;
+            std::string nameCameraServoJoint;
+
 
             // Pointer to the update event connection
             event::ConnectionPtr updateConnection;
@@ -61,25 +71,46 @@ namespace gazebo
                 
             }
 
+            // set gripper target position
+            void setGripperTarget(float target){
+                temptargetPositionGripper = currentPositionGripper;
+                targetPositionGripper = target;
+            }
+
+            // set vertical target position
+            void setVerticalTarget(float target){
+                temptargetPositionVertical = currentPositionVertical;
+                targetPositionVertical = target;
+            }
+
+            // set servo target position
+            void setServoTarget(float target){
+                if(target > LIMIT_SERVO_UP) target = LIMIT_SERVO_UP;
+                if(target < LIMIT_SERVO_DOWN) target = LIMIT_SERVO_DOWN;
+                temptargetPositionServo = currentPositionServo;
+                targetPositionServo = target;
+            }
+
             // move gripper motor to initial position
             void initGripper(){
-                velocityGripper = 0.01;
-                // wait for 2 seconds
-                ros::Duration(0.5).sleep(); 
-                velocityGripper = 0.0;
-                currentPositionGripper = 0;
-                targetPositionGripper  = 0;
-                isInitializedGRIP = true;
+                setGripperTarget(LIMIT_GRIP_DOWN);
+                int timeout = 100;
+                while(currentPositionGripper > LIMIT_GRIP_DOWN + 10*TOLERANCE && !timeout){
+                    ros::Duration(0.1).sleep();
+                    timeout--;
+                }
+                isInitializedGRIP = timeout > 0;
             }
 
             // move vertical motor to initial position
             void initVertical(){
-                velocityVertical = 0.01;
-                ros::Duration(0.5).sleep(); 
-                velocityVertical = 0.0;
-                currentPositionVertical = 0;
-                targetPositionVertical  = 0;
-                isInitializedVERT = true;
+                targetPositionVertical = LIMIT_VERT_UP;
+                int timeout = 100;
+                while(currentPositionVertical < LIMIT_VERT_UP - 10*TOLERANCE && !timeout){
+                    ros::Duration(0.1).sleep();
+                    timeout--;
+                }
+                isInitializedVERT = timeout > 0;
             }
 
             std::string fillOutputBuffer(uint16_t value){
@@ -109,10 +140,10 @@ namespace gazebo
                 // initialize variables
                 currentPositionVertical = LIMIT_VERT_UP;
                 currentPositionGripper = 0;
-                currentPositionServo = 0;
-                targetPositionVertical = LIMIT_VERT_UP;
-                targetPositionGripper = 0;
-                targetPositionServo = 0;
+                currentPositionServo = LIMIT_SERVO_DOWN;
+                setVerticalTarget(LIMIT_VERT_UP);
+                setGripperTarget(0);
+                setServoTarget(LIMIT_SERVO_DOWN);
                 velocityVertical = 0.0;
                 velocityGripper = 0.0;
                 velocityServo = 0.0;
@@ -152,7 +183,7 @@ namespace gazebo
                     {
                         int params[1] = {0};
                         getParameters(paramsstr, params);
-                        targetPositionServo = params[0];
+                        setServoTarget(params[0] * M_PI / 180);
                     }
                     else if(cmd == "rf")
                     {
@@ -238,10 +269,10 @@ namespace gazebo
                         int distAbs = params[0];
                         targetPositionGripper= ((float)distAbs)/1000.0;
                         if(targetPositionGripper < LIMIT_GRIP_DOWN){
-                            targetPositionGripper = LIMIT_GRIP_DOWN;  
+                            setGripperTarget(LIMIT_GRIP_DOWN);  
                         }
                         else if(targetPositionGripper > LIMIT_GRIP_UP){
-                            targetPositionGripper = LIMIT_GRIP_UP;
+                            setGripperTarget(LIMIT_GRIP_UP);
                         }
                     }
                     else if(cmd == "mr")
@@ -251,15 +282,15 @@ namespace gazebo
                         int distRel = params[0];
                         targetPositionGripper += ((float)distRel)/1000.0;
                         if(targetPositionGripper < LIMIT_GRIP_DOWN){
-                            targetPositionGripper = LIMIT_GRIP_DOWN;  
+                            setGripperTarget(LIMIT_GRIP_DOWN);  
                         }
                         else if(targetPositionGripper > LIMIT_GRIP_UP){
-                            targetPositionGripper = LIMIT_GRIP_UP;
+                            setGripperTarget(LIMIT_GRIP_UP);
                         }
                     }
                     else if(cmd == "st")
                     {
-                        targetPositionGripper = currentPositionGripper;
+                        setGripperTarget(currentPositionGripper);
                     }
                     else if(cmd == "gp")
                     {
@@ -282,7 +313,7 @@ namespace gazebo
                     }
                     else if(cmd == "st")
                     {
-                        targetPositionGripper = currentPositionGripper;
+                        setGripperTarget(currentPositionGripper);
                         targetPositionVertical = currentPositionVertical;
                     }
                 }
@@ -317,6 +348,24 @@ namespace gazebo
                 // Store the pointer to the model
                 this->model = _parent;
 
+                // Init Joint Controller
+                this->jointController.reset(new physics::JointController(this->model));
+
+                this->jointController->AddJoint(model->GetJoint("gripper_to_left_finger_joint"));
+                this->jointController->AddJoint(model->GetJoint("gripper_to_right_finger_joint"));
+                this->jointController->AddJoint(model->GetJoint("gripper_stand_to_gripper_joint"));
+                this->jointController->AddJoint(model->GetJoint("camera_servo_to_camera_base_joint"));
+
+                this->nameLeftFingerJoint = model->GetJoint("gripper_to_left_finger_joint")->GetScopedName();
+                this->nameRightFingerJoint = model->GetJoint("gripper_to_right_finger_joint")->GetScopedName();
+                this->nameVerticalJoint = model->GetJoint("gripper_stand_to_gripper_joint")->GetScopedName();
+                this->nameCameraServoJoint = model->GetJoint("camera_servo_to_camera_base_joint")->GetScopedName();
+
+                this->jointController->SetPositionPID(this->nameLeftFingerJoint, common::PID(1000, 0, 0));
+                this->jointController->SetPositionPID(this->nameRightFingerJoint, common::PID(1000, 0, 0));
+                this->jointController->SetPositionPID(this->nameVerticalJoint, common::PID(1000, 1, 0));
+                this->jointController->SetPositionPID(this->nameCameraServoJoint, common::PID(10, 0, 0));
+
                 // Listen to the update event. This event is broadcast every
                 // simulation iteration.
                 this->updateConnection = event::Events::ConnectWorldUpdateBegin(
@@ -326,10 +375,7 @@ namespace gazebo
             // Called by the world update start event
             void OnUpdate()
             {
-                // Apply a small linear velocity to the left gripper joint
-                this->model->GetJoint("gripper_to_left_finger_joint")->SetVelocity(0, 0.01);
-                //this->model->GetJoint("gripper_stand_to_gripper_joint")->SetPosition(0, 0.0);
-
+                //https://classic.gazebosim.org/tutorials?tut=set_velocity&cat=
 
                 // get current position of gripper
                 float currentPositionLeftFinger = this->model->GetJoint("gripper_to_left_finger_joint")->Position(0);
@@ -337,38 +383,57 @@ namespace gazebo
                 currentPositionGripper = currentPositionLeftFinger - currentPositionRightFinger;
                 // get current position of vertical stand
                 currentPositionVertical = toVerticalHeight(this->model->GetJoint("gripper_stand_to_gripper_joint")->Position(0));
-
-                if(currentPositionLeftFinger - targetPositionGripper/2 > TOLERANCE){
-                    this->model->GetJoint("gripper_to_left_finger_joint")->SetVelocity(0, -VELCONSTGripper);
-                }
-                else if(currentPositionLeftFinger - targetPositionGripper/2 < -TOLERANCE){
-                    this->model->GetJoint("gripper_to_left_finger_joint")->SetVelocity(0, VELCONSTGripper);
-                }
-                else{
-                    this->model->GetJoint("gripper_to_left_finger_joint")->SetVelocity(0, 0.0);
-                }
-
-                if(currentPositionRightFinger - (-targetPositionGripper/2) > TOLERANCE){
-                    this->model->GetJoint("gripper_to_right_finger_joint")->SetVelocity(0, -VELCONSTGripper);
-                }
-                else if(currentPositionRightFinger - (-targetPositionGripper/2) < -TOLERANCE){
-                    this->model->GetJoint("gripper_to_right_finger_joint")->SetVelocity(0, VELCONSTGripper);
-                }
-                else{
-                    this->model->GetJoint("gripper_to_right_finger_joint")->SetVelocity(0, 0.0);
+                // get current position of camera servo
+                currentPositionServo = this->model->GetJoint("camera_servo_to_camera_base_joint")->Position(0);
+                
+                // output current positions
+                //std::cout << "gripper position: " << currentPositionGripper << std::endl;
+                //std::cout << "vertical position: " << currentPositionVertical << std::endl;
+                //std::cout << "vertical position*: " << toVerticalPosition(currentPositionVertical) << std::endl;
+                //std::cout << "servo position: " << currentPositionServo << std::endl;
+                
+                
+                if(fabs(temptargetPositionGripper - targetPositionGripper) > TOLERANCE){
+                    if(temptargetPositionGripper > targetPositionGripper){
+                        temptargetPositionGripper -= TOLERANCE*0.1;
+                    }
+                    else if(temptargetPositionGripper < targetPositionGripper){
+                        temptargetPositionGripper += TOLERANCE*0.1;
+                    }
                 }
 
-
-                if(currentPositionVertical - targetPositionVertical < -TOLERANCE){
-                    this->model->GetJoint("gripper_stand_to_gripper_joint")->SetVelocity(0, VELCONSTVertical);
+                if(fabs(temptargetPositionVertical - targetPositionVertical) > TOLERANCE){
+                    if(temptargetPositionVertical > targetPositionVertical){
+                        temptargetPositionVertical -= TOLERANCE*0.1;
+                    }
+                    else if(temptargetPositionVertical < targetPositionVertical){
+                        temptargetPositionVertical += TOLERANCE*0.1;
+                    }
                 }
-                else{
-                    this->model->GetJoint("gripper_stand_to_gripper_joint")->SetVelocity(0, -VELCONSTVertical);
+
+                if(fabs(temptargetPositionServo - targetPositionServo) > TOLERANCE){
+                    if(temptargetPositionServo > targetPositionServo){
+                        temptargetPositionServo -= TOLERANCE*0.1;
+                    }
+                    else if(temptargetPositionServo < targetPositionServo){
+                        temptargetPositionServo += TOLERANCE*0.1;
+                    }
                 }
+ 
+                // set setpoints
+                this->jointController->SetPositionTarget(this->nameLeftFingerJoint, temptargetPositionGripper/2);
+                this->jointController->SetPositionTarget(this->nameRightFingerJoint, -temptargetPositionGripper/2);
+                this->jointController->SetPositionTarget(this->nameVerticalJoint, toVerticalPosition(temptargetPositionVertical));
+                this->jointController->SetPositionTarget(this->nameCameraServoJoint, temptargetPositionServo);
 
-                //std::cout << "left finger joint velocity: " << this->model->GetJoint("gripper_to_left_finger_joint")->GetVelocity(0) << std::endl;
-                //std::cout << "left finger joint position: " << this->model->GetJoint("gripper_to_left_finger_joint")->Position(0) << std::endl;
+                // print temp target
+                //std::cout << "temptargetPositionGripper: " << temptargetPositionGripper << std::endl;
+                //std::cout << "temptargetPositionVertical: " << temptargetPositionVertical << std::endl;
+                //std::cout << "temptargetPositionVertical (*): " << toVerticalPosition(temptargetPositionVertical) << std::endl;
+                //std::cout << "temptargetPositionServo: " << temptargetPositionServo << std::endl << std::endl;
 
+                // update controller
+                this->jointController->Update();
             }
 
 
