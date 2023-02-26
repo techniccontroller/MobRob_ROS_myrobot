@@ -2,7 +2,10 @@
 <launch>
 	
 	<!-- start gazebo -->
-	<include file="$(find mobrob_gazebo)/launch/myrobot_world.launch" />
+	<include file="$(find mobrob_gazebo)/launch/myrobot_world.launch">
+	    <arg name="world" value="$(find mobrob_gazebo)/worlds/myrobot_world.world"/>
+	    <!-- <arg name="world" value="$(find mobrob_gazebo)/worlds/simple_env_2.world"/> -->
+	</include>
 
 	<arg name="rvizconfig" default="$(find myrobot_model)/rviz/urdf.rviz" />
 
