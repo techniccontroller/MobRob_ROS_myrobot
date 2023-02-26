@@ -30,5 +30,7 @@
 	<node name="camera_view_node" pkg="image_view" type="image_view">
 		<remap from="image" to="/mobrob/camera1/image_raw" />
 	</node>
+
+	<node name="teleop_node" pkg="mobrob_behcon" type="teleop_visu.py"/>
 	
 </launch>
